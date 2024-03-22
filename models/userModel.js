@@ -36,10 +36,11 @@ const userSchema = new mongoose.Schema({
   passion: {
     type: String,
     default: "Not defined",
+    maxlength: [100, "Passion must have less than 100 characters."],
   },
   bio: {
     type: String,
-    maxlength: [100, "Bio must have less than 100 characters."],
+    maxlength: [500, "Bio must have less than 500 characters."],
     default: "Hi there 👋",
   },
   role: {
