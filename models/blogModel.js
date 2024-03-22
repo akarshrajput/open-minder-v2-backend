@@ -6,14 +6,14 @@ const blogSchema = new mongoose.Schema(
       type: String,
       required: [true, "Blog must have heading."],
       trim: true,
-      minlength: [10, "Heading must have more than 10 characters."],
+      minlength: [30, "Heading must have more than 10 characters."],
       maxlength: [100, "Heading must have less than 100 characters."],
     },
     description: {
       type: String,
       required: [true, "Blog must have description."],
       trim: true,
-      minlength: [20, "Description must have more than 20 characters."],
+      minlength: [50, "Description must have more than 20 characters."],
       maxlength: [300, "Description must have less than 300 characters."],
     },
     featuredImage: {
@@ -193,6 +193,14 @@ blogSchema.virtual("views").get(function () {
   const viewsArr = this.get("viewsArr");
   const numberofViews = viewsArr.length;
   return Number(`${numberofViews}`);
+});
+
+blogSchema.virtual("slug").get(function () {
+  const slugStr = this.get("heading");
+  const slugString = slugStr.split(" ");
+  const modifiedSlug = slugString.join("-");
+  const finalSlug = modifiedSlug.slice(0, 30);
+  return `${finalSlug}`;
 });
 
 blogSchema.pre(/^find/, function (next) {
