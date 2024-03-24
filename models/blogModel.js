@@ -19,7 +19,7 @@ const blogSchema = new mongoose.Schema(
     featuredImage: {
       type: "String",
       default: "default-blog.jpg",
-      // required: [true, "Blog must have a featured photo"],
+      required: [true, "Blog must have a featured photo"],
     },
     content: {
       type: String,
@@ -70,7 +70,7 @@ const blogSchema = new mongoose.Schema(
     blogType: {
       default: "blog",
       type: String,
-      enum: ["research", "blog"],
+      enum: ["research", "blog", "story", "news", "book"],
     },
     category: {
       type: String,
