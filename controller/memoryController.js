@@ -37,6 +37,9 @@ exports.getMemory = async (req, res, next) => {
       });
     }
 
+    memory.views += 1;
+    await memory.save();
+
     res.status(200).json({
       status: "success",
       data: {

@@ -13,6 +13,10 @@ const memorySchema = new mongoose.Schema(
       ref: "User",
       required: [true, "User should be present in memory"],
     },
+    views: {
+      type: Number,
+      default: 0,
+    },
     createdAt: {
       type: Date,
       default: Date.now(),
