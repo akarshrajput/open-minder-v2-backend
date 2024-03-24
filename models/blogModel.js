@@ -45,6 +45,10 @@ const blogSchema = new mongoose.Schema(
       // select: false,
       default: [],
     },
+    views: {
+      type: Number,
+      default: 0,
+    },
     usedAI: {
       type: Boolean,
       default: false,
@@ -189,11 +193,11 @@ blogSchema.virtual("readTime").get(function () {
   return `${readTimeMinutes}`;
 });
 
-blogSchema.virtual("views").get(function () {
-  const viewsArr = this.get("viewsArr");
-  const numberofViews = viewsArr.length;
-  return Number(`${numberofViews}`);
-});
+// blogSchema.virtual("views").get(function () {
+//   const viewsArr = this.get("viewsArr");
+//   const numberofViews = viewsArr.length;
+//   return Number(`${numberofViews}`);
+// });
 
 blogSchema.virtual("slug").get(function () {
   const slugStr = this.get("heading");

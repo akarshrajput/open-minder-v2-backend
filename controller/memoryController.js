@@ -37,16 +37,6 @@ exports.getMemory = async (req, res, next) => {
       });
     }
 
-    // Add users to views array
-    // const userId = req.user && req.user.id;
-    // if (userId) {
-    //   const hasVisited = blog.viewsArr.includes(userId);
-    //   if (!hasVisited) {
-    //     blog.viewsArr.push(userId);
-    //     await blog.save();
-    //   }
-    // }
-
     res.status(200).json({
       status: "success",
       data: {
