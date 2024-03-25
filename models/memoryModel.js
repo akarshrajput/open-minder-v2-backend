@@ -6,7 +6,7 @@ const memorySchema = new mongoose.Schema(
       type: String,
       required: [true, "Memories must have data"],
       trim: true,
-      maxlength: [200, "Memories must have less than 200 characters"],
+      maxlength: [100, "Memories must have less than 100 characters"],
     },
     author: {
       type: mongoose.Schema.ObjectId,
