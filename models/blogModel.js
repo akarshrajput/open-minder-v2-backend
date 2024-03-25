@@ -215,5 +215,11 @@ blogSchema.pre(/^find/, function (next) {
   next();
 });
 
+blogSchema.virtual("authorId").get(function () {
+  const author = this.get("author");
+  const authorinfo = author._id;
+  return `${authorinfo}`;
+});
+
 const Blog = mongoose.model("Blog", blogSchema);
 module.exports = Blog;

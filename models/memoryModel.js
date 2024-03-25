@@ -36,5 +36,11 @@ memorySchema.pre(/^find/, function (next) {
   next();
 });
 
+memorySchema.virtual("authorId").get(function () {
+  const author = this.get("author");
+  const authorinfo = author._id;
+  return `${authorinfo}`;
+});
+
 const Memory = mongoose.model("Memory", memorySchema);
 module.exports = Memory;
