@@ -46,5 +46,10 @@ router
   );
 
 router.post("/verify-token", authController.verifyToken);
+router.post(
+  "/:userId/follow",
+  authController.protect,
+  userController.followUser
+);
 
 module.exports = router;

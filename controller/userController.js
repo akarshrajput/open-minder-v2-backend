@@ -16,6 +16,52 @@ exports.getMe = (req, res, next) => {
   next();
 };
 
+exports.followUser = async (req, res, next) => {
+  try {
+    const currentUser = req.user.id; // ID of the current user (follower)
+    const userToFollow = req.params.userId; // ID of the user to be followed
+
+    // Find the current user and the user to be followed
+    const user = await User.findById(currentUser);
+    const followUser = await User.findById(userToFollow);
+
+    // Check if the user to be followed exists
+    if (!followUser) {
+      return res.status(404).json({
+        status: "error",
+        message: "User to follow not found.",
+      });
+    }
+
+    // Check if the current user is already following the user to be followed
+    if (user.following.includes(userToFollow)) {
+      return res.status(400).json({
+        status: "error",
+        message: "You are already following this user.",
+      });
+    }
+
+    // Add the user to be followed to the current user's following list
+    user.following.push(userToFollow);
+    await user.save();
+
+    // Optionally, you can also update the user to be followed to add the current user to their followers list
+    followUser.followers.push(currentUser);
+    await followUser.save();
+
+    res.status(200).json({
+      status: "success",
+      message: "Successfully followed the user.",
+    });
+  } catch (err) {
+    res.status(500).json({
+      status: "error",
+      message: "Failed to follow user.",
+      error: err.message,
+    });
+  }
+};
+
 exports.updateMe = async (req, res, next) => {
   try {
     // 1) Create Error if user is trying to change password

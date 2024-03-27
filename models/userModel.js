@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const validator = require("validator");
 const crypto = require("crypto");
+const { type } = require("os");
 
 const userSchema = new mongoose.Schema({
   name: {
@@ -78,13 +79,25 @@ const userSchema = new mongoose.Schema({
     default: true,
     select: false,
   },
+  followers: [
+    {
+      type: mongoose.Schema.ObjectId,
+      ref: "User",
+    },
+  ],
+  following: [
+    {
+      type: mongoose.Schema.ObjectId,
+      ref: "User",
+    },
+  ],
   verified: {
     type: Boolean,
     default: false,
   },
   accountCreatedAt: {
     type: Date,
-    default: Date.now(),
+    default: Date.now,
   },
 });
 
@@ -142,6 +155,17 @@ userSchema.methods.createPasswordResetToken = function () {
 
   return resetToken; // We will use unencrypted token for email and store encrypted token in database
 };
+
+userSchema.pre(/^find/, function (next) {
+  this.populate({
+    path: "followers",
+    select: "name username verified photo",
+  }).populate({
+    path: "following",
+    select: "name username verified photo",
+  });
+  next();
+});
 
 const User = mongoose.model("User", userSchema);
 module.exports = User;
