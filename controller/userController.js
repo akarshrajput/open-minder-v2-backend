@@ -26,12 +26,12 @@ exports.followUser = async (req, res, next) => {
     const followUser = await User.findById(userToFollow);
 
     // Check if the user to be followed exists
-    // if (!followUser) {
-    //   return res.status(404).json({
-    //     status: "error",
-    //     message: "User to follow not found.",
-    //   });
-    // }
+    if (!followUser) {
+      return res.status(404).json({
+        status: "error",
+        message: "User to follow not found.",
+      });
+    }
 
     // Check if the current user is already following the user to be followed
     if (user.following.includes(userToFollow)) {
