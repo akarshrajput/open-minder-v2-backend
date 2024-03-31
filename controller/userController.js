@@ -41,13 +41,17 @@ exports.followUser = async (req, res, next) => {
       });
     }
 
-    // Add the user to be followed to the current user's following list
-    user.following.push(userToFollow);
-    await user.save();
-
-    // Optionally, you can also update the user to be followed to add the current user to their followers list
-    followUser.followers.push(currentUser);
-    await followUser.save();
+    // Update both current user's following array and the user to be followed's followers array
+    await Promise.all([
+      User.updateOne(
+        { _id: currentUser },
+        { $addToSet: { following: userToFollow } }
+      ),
+      User.updateOne(
+        { _id: userToFollow },
+        { $addToSet: { followers: currentUser } }
+      ),
+    ]);
 
     res.status(200).json({
       status: "success",
@@ -158,7 +162,9 @@ exports.getAllUsers = async (req, res, next) => {
 
 exports.getUser = async (req, res, next) => {
   try {
-    const user = await User.findById(req.params.id);
+    const user = await User.findById(req.params.id)
+      .populate("followers", "name username photo verified")
+      .populate("following", "name username photo verified");
 
     if (!user) {
       return res.status(404).json({

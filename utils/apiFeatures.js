@@ -35,10 +35,16 @@ class APIFeatures {
 
   limitFields() {
     if (this.queryString.fields) {
-      const fields = this.queryString.fields.split(",").join(" ");
+      let fields = this.queryString.fields.split(",");
+      // Exclude followers and following fields if they are requested
+      fields = fields.filter(
+        (field) => !["followers", "following"].includes(field)
+      );
+      fields = fields.join(" ");
       this.query = this.query.select(fields);
     } else {
-      this.query = this.query.select("-__v");
+      // Exclude followers and following by default
+      this.query = this.query.select("-followers -following -__v");
     }
 
     return this;

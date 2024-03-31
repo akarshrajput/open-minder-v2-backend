@@ -156,16 +156,16 @@ userSchema.methods.createPasswordResetToken = function () {
   return resetToken; // We will use unencrypted token for email and store encrypted token in database
 };
 
-userSchema.pre(/^find/, function (next) {
-  this.populate({
-    path: "followers",
-    select: "name username verified photo",
-  }).populate({
-    path: "following",
-    select: "name username verified photo",
-  });
-  next();
-});
+// userSchema.pre(/^find/, function (next) {
+//   this.populate({
+//     path: "followers",
+//     select: "name",
+//   }).populate({
+//     path: "following",
+//     select: "name",
+//   });
+//   next();
+// });
 
 const User = mongoose.model("User", userSchema);
 module.exports = User;
