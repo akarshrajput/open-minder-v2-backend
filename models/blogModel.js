@@ -210,7 +210,7 @@ blogSchema.virtual("slug").get(function () {
 blogSchema.pre(/^find/, function (next) {
   this.populate({
     path: "author",
-    select: "name username email verified photo",
+    select: "name username email verified photo followers",
   }).populate({ path: "viewsArr", select: "name -_id" });
   next();
 });

@@ -19,12 +19,13 @@ exports.getMe = (req, res, next) => {
 exports.followUser = async (req, res, next) => {
   try {
     const currentUser = req.user.id; // ID of the current user (follower)
-    const userToFollow = req.params.userId; // ID of the user to be followed
-
+    const userToFollow = req.body.userId; // ID of the user to be followed
+    // console.log(userToFollow);
     // Find the current user and the user to be followed
     const user = await User.findById(currentUser);
     const followUser = await User.findById(userToFollow);
-
+    // console.log(user);
+    // console.log(followUser);
     // Check if the user to be followed exists
     if (!followUser) {
       return res.status(404).json({
